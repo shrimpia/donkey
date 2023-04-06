@@ -1,7 +1,3 @@
-export const DI = {
-  MISSKEY: 'misskey',
-} as const;
-
 /** 現在のDonkeyが実装しているMastodon APIのバージョン */
 export const IMPLEMENTED_MASTODON_API_VERSION = '4.0.0';
 
