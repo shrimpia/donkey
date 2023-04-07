@@ -35,6 +35,7 @@ export const defineGet = <
     // トークンのバリデーション
     const token = getToken(req.headers.authorization);
     if (opts.requireToken && !token) {
+      res.statusCode = 401;
       return {
         error: 'Invalid Access Token',
       };
