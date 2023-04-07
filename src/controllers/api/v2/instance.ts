@@ -1,6 +1,11 @@
-import { RouteHandlerMethod } from 'fastify';
-import { fetchInstanceV2 } from 'src/services/fetch-instance';
+import { fetchInstanceV2 } from '@/services/fetch-instance';
+import { defineGet } from '@/kernel/define-get';
+import z from 'zod';
 
-export const getInstance: RouteHandlerMethod = async () => {
-  return fetchInstanceV2();
-};
+export const getInstance = defineGet({
+  paramsDef: z.object({}),
+  queryDef: z.object({}),
+  run() {
+    return fetchInstanceV2();
+  },
+});
