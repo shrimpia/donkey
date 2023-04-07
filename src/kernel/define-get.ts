@@ -1,11 +1,17 @@
-import z, { ZodType } from 'zod';
 import { RouteHandlerMethod } from 'fastify';
-import { toErrorResponse } from '@/kernel/to-error-response';
-import { GetOptions } from '@/kernel/get-options';
+import { ZodType } from 'zod';
 
-export const defineGet = <T1 extends ZodType, T2 extends ZodType>(
-  opts: GetOptions<T1, T2>,
-): RouteHandlerMethod => {
+import { GetOptions } from '@/kernel/get-options';
+import { getToken } from '@/kernel/get-token';
+import { toErrorResponse } from '@/kernel/to-error-response';
+
+export const defineGet = <
+  T1 extends ZodType,
+  T2 extends ZodType,
+  T3 extends boolean,
+>(
+    opts: GetOptions<T1, T2, T3>,
+  ): RouteHandlerMethod => {
   return (req, res) => {
     // パラメータのバリデーション
     const paramsParseResult = opts.paramsDef.safeParse(req.params);
@@ -26,6 +32,20 @@ export const defineGet = <T1 extends ZodType, T2 extends ZodType>(
       );
     }
 
-    return opts.run(paramsParseResult.data, queryParseResult.data, req, res);
+    // トークンのバリデーション
+    const token = getToken(req.headers.authorization);
+    if (opts.requireToken && !token) {
+      return {
+        error: 'Invalid Access Token',
+      };
+    }
+
+    return opts.run({
+      params: paramsParseResult.data,
+      query: queryParseResult.data,
+      token: token as any,
+      req,
+      res,
+    });
   };
 };

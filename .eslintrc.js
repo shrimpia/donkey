@@ -5,11 +5,9 @@ module.exports = {
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
+  plugins: ['@typescript-eslint/eslint-plugin', 'import'],
   extends: [
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-    'prettier',
   ],
   root: true,
   env: {
@@ -27,7 +25,33 @@ module.exports = {
 			'error',
 			'always'
 		],
+
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
+    "import/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type",
+        ],
+        pathGroups: [
+          {
+            pattern: "@alias/**",
+            group: "parent",
+            position: "before",
+          },
+        ],
+        alphabetize: {
+          order: "asc",
+        },
+        "newlines-between": "always",
+      },
+    ],
   },
 };

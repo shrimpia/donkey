@@ -1,5 +1,5 @@
-import z, { ZodType } from 'zod';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import z, { ZodType } from 'zod';
 
 export interface GetOptions<
   TParamDef extends ZodType,
@@ -11,7 +11,7 @@ export interface GetOptions<
   requireToken: TRequireToken;
   run: (props: {
     params: z.infer<TParamDef>;
-    queries: z.infer<TQueryDef>;
+    query: z.infer<TQueryDef>;
     token: TRequireToken extends true ? string : null;
     req: FastifyRequest;
     res: FastifyReply;

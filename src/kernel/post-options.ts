@@ -1,5 +1,5 @@
-import z, { ZodType } from 'zod';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import z, { ZodType } from 'zod';
 
 export interface PostOptions<
   TParamDef extends ZodType,

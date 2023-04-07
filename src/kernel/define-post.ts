@@ -1,8 +1,9 @@
-import { ZodType } from 'zod';
 import { RouteHandlerMethod } from 'fastify';
-import { toErrorResponse } from '@/kernel/to-error-response';
-import { PostOptions } from '@/kernel/post-options';
+import { ZodType } from 'zod';
+
 import { getToken } from '@/kernel/get-token';
+import { PostOptions } from '@/kernel/post-options';
+import { toErrorResponse } from '@/kernel/to-error-response';
 
 export const definePost = <
   T1 extends ZodType,
@@ -28,6 +29,7 @@ export const definePost = <
       return toErrorResponse(bodyParseResult.error, 'Failed to validate body');
     }
 
+    // トークンのバリデーション
     const token = getToken(req.headers.authorization);
     if (opts.requireToken && !token) {
       return {
